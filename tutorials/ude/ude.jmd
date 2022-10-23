@@ -12,6 +12,7 @@ using OrdinaryDiffEq
 using Distributions
 using DiffEqFlux, Flux
 using Random
+using Optimization
 using Plots;
 ```
 
@@ -158,9 +159,10 @@ end;
 ```
 
 ```julia
-res_ude1 = DiffEqFlux.sciml_train((θ)->loss(θ,prob_ude1),
-                                  p1_,
-                                  cb=callback1);
+adtype = Optimization.AutoZygote()
+optf = Optimization.OptimizationFunction((x,p)->loss(x, prob_ude1), adtype)
+optprob = Optimization.OptimizationProblem(optf, p1_)
+res_ude1 = Optimization.solve(optprob, ADAM(0.1), callback=callback1)
 ```
 
 The fitted parameter in this model corresponds to the infectivity parameter, `β`.

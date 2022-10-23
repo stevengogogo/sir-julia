@@ -48,7 +48,8 @@ packages = [
   "StochasticDiffEq",
   "Tables",
   "Turing",
-  "Weave"
+  "Weave",
+  "Optimization"
 ]
 
 for p in packages
